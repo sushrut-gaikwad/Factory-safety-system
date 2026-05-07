@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:sqlite:./safety.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  ai-service-url: http://localhost:5000
+  jwt:
+    secret: FactorySafetySystemSecretKeyThatIsAtLeast256BitsLong2024!
+    expiration-ms: 86400000
+  alert:
+    cooldown-seconds: 30
+  default-admin:
+    username: admin
+    password: admin123
+
+logging:
+  level:
+    com.factory.safety: INFO
+    org.springframework.web: INFO

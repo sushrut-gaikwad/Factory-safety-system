@@ -32,7 +32,11 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/detections").permitAll()  // AI service callback
+                .requestMatchers("/api/cameras/**").permitAll()   // Camera management
+                .requestMatchers("/api/zones/**").permitAll()     // Zone management
+                .requestMatchers("/api/detections/**").permitAll()  // AI service callback
+                .requestMatchers("/api/alerts/**").permitAll()    // Alerts
+                .requestMatchers("/api/events/**").permitAll()    // Events history
                 .requestMatchers("/ws/**").permitAll()            // WebSocket
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()

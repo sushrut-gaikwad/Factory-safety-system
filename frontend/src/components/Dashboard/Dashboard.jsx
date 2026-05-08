@@ -18,12 +18,19 @@ export default function Dashboard({ systemStatus, alerts, detections, timeline, 
 
   const loadData = async () => {
     try {
-      const [camRes, statsRes, alertRes] = await Promise.all([
+      const [camRes, statsRes, alertRes] = await Promise.allSettled([
         getCameras(), getEventStats(), getActiveAlerts()
       ]);
-      setCameras(camRes.data instanceof Array ? camRes.data : [camRes.data].filter(Boolean));
-      setStats(statsRes.data);
-      setActiveAlertCount(alertRes.data.length);
+      if (camRes.status === 'fulfilled') {
+        const data = camRes.value.data;
+        setCameras(data instanceof Array ? data : [data].filter(Boolean));
+      }
+      if (statsRes.status === 'fulfilled') {
+        setStats(statsRes.value.data);
+      }
+      if (alertRes.status === 'fulfilled') {
+        setActiveAlertCount(alertRes.value.data.length);
+      }
     } catch (e) {}
   };
 
